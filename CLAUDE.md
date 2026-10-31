@@ -12,15 +12,16 @@ Personal budget tracker (React 19 + Vite, plain JavaScript, no backend). The UI,
 - `npm run build` — production build to `dist/`; this is the only automated check (no linter or test suite is configured)
 - `npm run preview` — serve the built `dist/`
 
-## Git workflow (required)
+## Git: commit e push a cada mudança
 
-The user wants every change versioned and pushed to GitHub. These instructions are standing authorization to do that without asking each time:
+O usuário quer poder voltar tudo ao normal sempre que algo der errado. Por isso:
 
-- After each completed change, run `npm run build`. If it passes, commit and then `git push` to `origin`.
-- Make one commit per logical change, with a short, descriptive message in Portuguese (e.g. `Adiciona categoria Gás em Contas`).
-- Never commit `node_modules/` or `dist/` (already in `.gitignore`).
-- If the build fails, fix it before committing. Don't push broken code.
-- If the push fails (no remote, authentication, conflict), report it to the user instead of forcing it. Never use `push --force`.
+- Faça commit no git de **todas** as mudanças, com uma mensagem clara em português que diga o que mudou e por quê.
+- Um commit por mudança lógica. Não junte alterações sem relação no mesmo commit.
+- Antes de cada commit, rode `npm run build` (o projeto ainda não tem testes; se um dia tiver, rode `npm test` também). Só faça commit se passar, para que todo ponto do histórico seja uma versão que funciona.
+- Envie (`git push`) para `origin main` logo após cada commit. Repositório (privado): https://github.com/ClaudioFlaviano/controle-orcamento
+- Não é preciso pedir permissão para commitar ou enviar.
+- Se algo der errado, ofereça restaurar uma versão anterior. Prefira `git revert` (que mantém o histórico) a reescrever o histórico (`reset --hard`, `push --force`), e só reescreva com autorização explícita.
 
 ## Architecture
 
