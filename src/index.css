@@ -1,0 +1,535 @@
+:root {
+  color-scheme: light;
+  --pagina: #f9f9f7;
+  --superficie: #fcfcfb;
+  --texto: #0b0b0b;
+  --texto-2: #52514e;
+  --texto-mudo: #898781;
+  --borda: rgba(11, 11, 11, 0.1);
+  --trilho: #f0efec;
+  --barra: #2a78d6;
+  --destaque: #2a78d6;
+  --positivo: #006300;
+  --negativo: #d03b3b;
+  --sombra: 0 1px 2px rgba(0, 0, 0, 0.04);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --pagina: #0d0d0d;
+    --superficie: #1a1a19;
+    --texto: #f0efec;
+    --texto-2: #c3c2b7;
+    --texto-mudo: #898781;
+    --borda: rgba(255, 255, 255, 0.1);
+    --trilho: #2c2c2a;
+    --barra: #3987e5;
+    --destaque: #3987e5;
+    --positivo: #0ca30c;
+    --negativo: #e66767;
+    --sombra: none;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--pagina);
+  color: var(--texto);
+  font-family: system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-size: 15px;
+  line-height: 1.45;
+}
+
+.app {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 32px 20px 64px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+h1 {
+  margin: 0;
+  font-size: 26px;
+}
+
+h2 {
+  margin: 0 0 16px;
+  font-size: 16px;
+}
+
+.subtitulo {
+  margin: 4px 0 0;
+  color: var(--texto-2);
+}
+
+/* ---------- Cartões de resumo ---------- */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.card,
+.painel {
+  background: var(--superficie);
+  border: 1px solid var(--borda);
+  border-radius: 12px;
+  box-shadow: var(--sombra);
+}
+
+.card {
+  padding: 18px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.card-titulo {
+  color: var(--texto-2);
+  font-size: 13px;
+}
+
+.card-valor {
+  font-size: 28px;
+  font-weight: 650;
+}
+
+.card-status {
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.card-saldo.positivo .card-status {
+  color: var(--positivo);
+}
+
+.card-saldo.negativo .card-valor,
+.card-saldo.negativo .card-status {
+  color: var(--negativo);
+}
+
+/* ---------- Layout ---------- */
+.grade {
+  display: grid;
+  grid-template-columns: minmax(280px, 1fr) 1.4fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.painel {
+  padding: 20px;
+  min-width: 0;
+}
+
+.linha {
+  flex-wrap: wrap;
+}
+
+.linha > label {
+  min-width: 140px;
+}
+
+/* ---------- Formulário ---------- */
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.form h2 {
+  margin: 0;
+}
+
+label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--texto-2);
+  flex: 1;
+}
+
+input,
+select {
+  font: inherit;
+  color: var(--texto);
+  background: var(--pagina);
+  border: 1px solid var(--borda);
+  border-radius: 8px;
+  padding: 9px 10px;
+  min-width: 0;
+}
+
+input:focus,
+select:focus,
+button:focus-visible {
+  outline: 2px solid var(--destaque);
+  outline-offset: 1px;
+}
+
+.linha {
+  display: flex;
+  gap: 12px;
+}
+
+.erro {
+  margin: 0;
+  color: var(--negativo);
+  font-size: 13px;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+.botao-principal {
+  background: var(--destaque);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 11px;
+  font-weight: 600;
+}
+
+.botao-principal:hover {
+  filter: brightness(1.08);
+}
+
+.segmentado {
+  display: inline-flex;
+  background: var(--trilho);
+  border-radius: 8px;
+  padding: 3px;
+  gap: 2px;
+}
+
+.segmentado button {
+  border: none;
+  background: transparent;
+  color: var(--texto-2);
+  padding: 6px 14px;
+  border-radius: 6px;
+}
+
+.segmentado button.ativo {
+  background: var(--superficie);
+  color: var(--texto);
+  font-weight: 600;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.12);
+}
+
+/* ---------- Gráfico de barras ---------- */
+.barras {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.barra-linha {
+  position: relative;
+  display: grid;
+  grid-template-columns: minmax(110px, 30%) 1fr auto;
+  align-items: center;
+  gap: 12px;
+  padding: 7px 6px;
+  border-radius: 6px;
+}
+
+.barra-linha:hover {
+  background: var(--trilho);
+}
+
+.barra-nome {
+  font-size: 13px;
+  color: var(--texto-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.barra-trilho {
+  height: 14px;
+  display: block;
+}
+
+.barra {
+  display: block;
+  height: 100%;
+  min-width: 4px;
+  background: var(--barra);
+  border-radius: 0 4px 4px 0;
+}
+
+.barra-valor {
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+  white-space: nowrap;
+  min-width: 140px;
+}
+
+.barra-pct {
+  display: inline-block;
+  min-width: 48px;
+  margin-left: 8px;
+  color: var(--texto-mudo);
+}
+
+.dica {
+  display: none;
+  position: absolute;
+  z-index: 2;
+  left: 30%;
+  bottom: calc(100% + 4px);
+  background: var(--texto);
+  color: var(--superficie);
+  font-size: 12px;
+  padding: 6px 10px;
+  border-radius: 6px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+.dica strong {
+  display: block;
+}
+
+.barra-linha:hover .dica {
+  display: block;
+}
+
+.vazio {
+  color: var(--texto-mudo);
+  margin: 8px 0;
+}
+
+/* ---------- Lista de transações ---------- */
+.lista-cabecalho {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.lista-cabecalho h2 {
+  margin: 0;
+}
+
+.lista {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 4px;
+  border-top: 1px solid var(--borda);
+}
+
+.item-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.item-descricao {
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.item-meta {
+  font-size: 12px;
+  color: var(--texto-mudo);
+}
+
+.item-valor {
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.item-valor.renda {
+  color: var(--positivo);
+}
+
+.excluir {
+  border: none;
+  background: transparent;
+  color: var(--texto-mudo);
+  font-size: 20px;
+  line-height: 1;
+  width: 32px;
+  height: 32px;
+  border-radius: 6px;
+}
+
+.excluir:hover {
+  background: var(--trilho);
+  color: var(--negativo);
+}
+
+/* ---------- Orçamento mensal ---------- */
+.orcamento-cabecalho {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 16px;
+}
+
+.orcamento-cabecalho h2 {
+  margin: 0;
+}
+
+.seletor-mes {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.seletor-mes > button:not(.link) {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--borda);
+  background: var(--pagina);
+  color: var(--texto);
+  border-radius: 8px;
+  font-size: 18px;
+  line-height: 1;
+}
+
+.mes-nome {
+  min-width: 150px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.link {
+  border: none;
+  background: none;
+  padding: 4px 6px;
+  color: var(--destaque);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.orcamento-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.orcamento-form input {
+  flex: 1;
+  max-width: 220px;
+}
+
+.orcamento-form .botao-principal,
+.botao-secundario {
+  padding: 9px 18px;
+}
+
+.botao-secundario {
+  border: 1px solid var(--borda);
+  background: transparent;
+  color: var(--texto);
+  border-radius: 8px;
+}
+
+.progresso {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.progresso-numeros,
+.progresso-rodape {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.progresso-numeros strong {
+  font-size: 20px;
+}
+
+.progresso-pct {
+  color: var(--texto-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.progresso-trilho {
+  height: 14px;
+  background: var(--trilho);
+  border-radius: 7px;
+  overflow: hidden;
+}
+
+.progresso-barra {
+  height: 100%;
+  background: var(--barra);
+  border-radius: 7px;
+  transition: width 0.3s ease, background-color 0.3s ease;
+}
+
+.progresso-status {
+  font-size: 13px;
+  color: var(--texto-2);
+}
+
+.estourado .progresso-barra {
+  background: var(--negativo);
+}
+
+.estourado .progresso-pct,
+.estourado .progresso-status {
+  color: var(--negativo);
+  font-weight: 600;
+}
+
+/* ---------- Telas pequenas ---------- */
+@media (max-width: 760px) {
+  .cards,
+  .grade {
+    grid-template-columns: 1fr;
+  }
+
+  .barra-linha {
+    grid-template-columns: 1fr auto;
+  }
+
+  .barra-trilho {
+    grid-column: 1 / -1;
+    order: 3;
+  }
+
+  .barra-valor {
+    min-width: 0;
+  }
+}
