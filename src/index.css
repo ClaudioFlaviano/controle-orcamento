@@ -634,15 +634,113 @@ button:disabled {
   font-weight: 600;
 }
 
-/* ---------- Telas pequenas ---------- */
-@media (max-width: 760px) {
-  .cards,
+/* ---------- Telas médias ---------- */
+/* Abaixo disto o formulário e o gráfico lado a lado ficam apertados */
+@media (max-width: 860px) {
   .grade {
     grid-template-columns: 1fr;
+  }
+}
+
+/* ---------- Telas pequenas ---------- */
+@media (max-width: 760px) {
+  .app {
+    padding: 24px 16px 48px;
+    gap: 16px;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .card,
+  .painel {
+    padding: 16px;
+  }
+
+  /* 16px evita o zoom automático do iOS ao focar um campo */
+  input,
+  select {
+    font-size: 16px;
+    min-height: 44px;
+  }
+
+  /* Alvos de toque com pelo menos 44×44px */
+  .botao-principal,
+  .botao-secundario,
+  .orcamento-form .botao-principal {
+    min-height: 44px;
+  }
+
+  .segmentado button {
+    min-height: 40px;
+  }
+
+  .excluir,
+  .seletor-mes > button:not(.link) {
+    width: 44px;
+    height: 44px;
+    flex: none;
+  }
+
+  .link {
+    min-height: 44px;
+    padding: 4px 8px;
+  }
+
+  /* Filtros e seletor de mês ocupam a largura toda */
+  .lista-cabecalho .segmentado,
+  .seletor-mes {
+    width: 100%;
+  }
+
+  .lista-cabecalho .segmentado button {
+    flex: 1;
+  }
+
+  .mes-nome {
+    flex: 1;
+    min-width: 0;
+  }
+
+  /* Valor vai para baixo da descrição, liberando largura para o texto;
+     nomes longos quebram linha em vez de serem cortados */
+  .item {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    grid-template-areas:
+      'info excluir'
+      'valor excluir';
+    align-items: center;
+    column-gap: 8px;
+    row-gap: 2px;
+    padding: 12px 0;
+  }
+
+  .item-info {
+    grid-area: info;
+  }
+
+  .item-valor {
+    grid-area: valor;
+  }
+
+  .excluir {
+    grid-area: excluir;
+    margin-right: -8px;
+  }
+
+  .item-descricao,
+  .barra-nome {
+    white-space: normal;
+    overflow-wrap: break-word;
   }
 
   .barra-linha {
     grid-template-columns: 1fr auto;
+    gap: 4px 12px;
+    padding: 8px 0;
   }
 
   .barra-trilho {
@@ -651,6 +749,10 @@ button:disabled {
   }
 
   .barra-valor {
+    min-width: 0;
+  }
+
+  .barra-pct {
     min-width: 0;
   }
 }
