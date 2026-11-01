@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useId, useState } from 'react';
 import { formatarMes, formatarMoeda, formatarPorcentagem, lerValor, mesAtualISO, somarMes } from '../utils/format';
 
 export default function MonthlyBudget({ transacoes, limites, onDefinir, onRemover }) {
+  const id = useId();
   const [mes, setMes] = useState(mesAtualISO);
   const [editando, setEditando] = useState(false);
   const [entrada, setEntrada] = useState('');
@@ -57,32 +58,42 @@ export default function MonthlyBudget({ transacoes, limites, onDefinir, onRemove
 
       {mostrarFormulario ? (
         <form className="orcamento-form" onSubmit={salvar}>
-          <label>
-            Limite de gastos para {formatarMes(mes)} (R$)
-            <div className="linha">
-              <input
-                inputMode="decimal"
-                placeholder="0,00"
-                value={entrada}
-                onChange={(e) => setEntrada(e.target.value)}
-                autoFocus={editando}
-              />
-              <button type="submit" className="botao-principal">
-                Salvar
+          <label htmlFor={`${id}-limite`}>Limite de gastos para {formatarMes(mes)} (R$)</label>
+          <div className="linha">
+            <input
+              id={`${id}-limite`}
+              inputMode="decimal"
+              placeholder="0,00"
+              autoComplete="off"
+              value={entrada}
+              onChange={(e) => {
+                setEntrada(e.target.value);
+                setErro('');
+              }}
+              autoFocus={editando}
+              aria-invalid={erro ? true : undefined}
+              aria-describedby={erro ? `${id}-erro` : undefined}
+            />
+            <button type="submit" className="botao-principal">
+              {editando ? 'Salvar' : 'Definir limite'}
+            </button>
+            {editando && (
+              <button type="button" className="botao-secundario" onClick={() => setEditando(false)}>
+                Cancelar
               </button>
-              {editando && (
-                <button type="button" className="botao-secundario" onClick={() => setEditando(false)}>
-                  Cancelar
-                </button>
-              )}
-            </div>
-          </label>
+            )}
+          </div>
           {erro && (
-            <p className="erro" role="alert">
+            <p id={`${id}-erro`} className="erro" role="alert">
               {erro}
             </p>
           )}
-          {!limite && <p className="vazio">Gasto neste mês até agora: {formatarMoeda(gasto)}</p>}
+          {!limite && (
+            <p className="vazio">
+              Defina quanto quer gastar neste mês para acompanhar o progresso. Gasto até agora:{' '}
+              <strong className="valor">{formatarMoeda(gasto)}</strong>
+            </p>
+          )}
         </form>
       ) : (
         <Progresso gasto={gasto} limite={limite} onAlterar={comecarEdicao} onRemover={() => onRemover(mes)} />

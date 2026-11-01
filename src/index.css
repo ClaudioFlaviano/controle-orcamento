@@ -213,6 +213,25 @@ input[aria-invalid='true'] {
   margin: 0;
   color: var(--negativo);
   font-size: 13px;
+  font-weight: 500;
+}
+
+/* Confirmação depois de adicionar; vazia, sai do fluxo mas segue
+   no DOM para que leitores de tela anunciem a próxima mensagem */
+.sucesso {
+  margin: 0;
+  color: var(--positivo);
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.sucesso:empty {
+  position: absolute;
+}
+
+.valor {
+  color: var(--texto);
+  font-variant-numeric: tabular-nums;
 }
 
 button {
@@ -511,6 +530,10 @@ button:disabled {
   display: flex;
   flex-direction: column;
   gap: 8px;
+}
+
+.orcamento-form > label {
+  flex: none;
 }
 
 .orcamento-form input {
