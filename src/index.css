@@ -4,11 +4,17 @@
   --superficie: #fcfcfb;
   --texto: #0b0b0b;
   --texto-2: #52514e;
-  --texto-mudo: #898781;
+  /* #6b6a65 dá ~5,3:1 sobre a superfície (o antigo #898781 dava ~3,5:1) */
+  --texto-mudo: #6b6a65;
   --borda: rgba(11, 11, 11, 0.1);
+  /* Borda de campos e botões: precisa de 3:1 para ser percebida (WCAG 1.4.11) */
+  --borda-campo: rgba(11, 11, 11, 0.32);
   --trilho: #f0efec;
   --barra: #2a78d6;
-  --destaque: #2a78d6;
+  /* Cor de links e foco (texto sobre a superfície) */
+  --destaque: #2468c0;
+  /* Fundo do botão principal (texto branco por cima, ≥ 4,5:1) */
+  --botao: #2468c0;
   --positivo: #006300;
   --negativo: #d03b3b;
   --sombra: 0 1px 2px rgba(0, 0, 0, 0.04);
@@ -21,11 +27,14 @@
     --superficie: #1a1a19;
     --texto: #f0efec;
     --texto-2: #c3c2b7;
-    --texto-mudo: #898781;
+    --texto-mudo: #9a988f;
     --borda: rgba(255, 255, 255, 0.1);
+    --borda-campo: rgba(255, 255, 255, 0.28);
     --trilho: #2c2c2a;
     --barra: #3987e5;
     --destaque: #3987e5;
+    /* #3987e5 com texto branco dava ~3,6:1; este tom escurecido passa de 4,5:1 */
+    --botao: #2a6fd1;
     --positivo: #0ca30c;
     --negativo: #e66767;
     --sombra: none;
@@ -161,7 +170,7 @@ select {
   font: inherit;
   color: var(--texto);
   background: var(--pagina);
-  border: 1px solid var(--borda);
+  border: 1px solid var(--borda-campo);
   border-radius: 8px;
   padding: 9px 10px;
   min-width: 0;
@@ -191,7 +200,7 @@ button {
 }
 
 .botao-principal {
-  background: var(--destaque);
+  background: var(--botao);
   color: #fff;
   border: none;
   border-radius: 8px;
@@ -410,7 +419,7 @@ button {
 .seletor-mes > button:not(.link) {
   width: 32px;
   height: 32px;
-  border: 1px solid var(--borda);
+  border: 1px solid var(--borda-campo);
   background: var(--pagina);
   color: var(--texto);
   border-radius: 8px;
@@ -454,7 +463,7 @@ button {
 }
 
 .botao-secundario {
-  border: 1px solid var(--borda);
+  border: 1px solid var(--borda-campo);
   background: transparent;
   color: var(--texto);
   border-radius: 8px;
