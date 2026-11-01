@@ -15,16 +15,34 @@ export default function TransactionList({ transacoes, onRemover }) {
     .sort((a, b) => b.data.localeCompare(a.data));
 
   const remover = (t) => {
-    if (window.confirm(`Excluir "${t.descricao}"?`)) onRemover(t.id);
+    const tipo = t.tipo === 'renda' ? 'a renda' : 'a despesa';
+    if (window.confirm(`Excluir ${tipo} "${t.descricao}" de ${formatarMoeda(t.valor)}? Esta ação não pode ser desfeita.`)) {
+      onRemover(t.id);
+    }
   };
+
+  const mensagemVazia =
+    transacoes.length === 0
+      ? 'Nenhuma transação ainda. Use o formulário “Nova transação” para registrar sua primeira renda ou despesa.'
+      : filtro === 'renda'
+        ? 'Nenhuma renda registrada.'
+        : 'Nenhuma despesa registrada.';
 
   return (
     <section className="painel">
       <div className="lista-cabecalho">
-        <h2>Transações</h2>
-        <div className="segmentado" role="group" aria-label="Filtrar">
+        <h2>
+          Transações {transacoes.length > 0 && <span className="contagem">({visiveis.length})</span>}
+        </h2>
+        <div className="segmentado" role="group" aria-label="Filtrar transações">
           {FILTROS.map((f) => (
-            <button key={f.id} type="button" className={filtro === f.id ? 'ativo' : ''} onClick={() => setFiltro(f.id)}>
+            <button
+              key={f.id}
+              type="button"
+              className={filtro === f.id ? 'ativo' : ''}
+              aria-pressed={filtro === f.id}
+              onClick={() => setFiltro(f.id)}
+            >
               {f.rotulo}
             </button>
           ))}
@@ -32,7 +50,7 @@ export default function TransactionList({ transacoes, onRemover }) {
       </div>
 
       {visiveis.length === 0 ? (
-        <p className="vazio">Nenhuma transação ainda.</p>
+        <p className="vazio">{mensagemVazia}</p>
       ) : (
         <ul className="lista">
           {visiveis.map((t) => (
@@ -46,8 +64,14 @@ export default function TransactionList({ transacoes, onRemover }) {
               <span className={`item-valor ${t.tipo}`}>
                 {t.tipo === 'renda' ? '+' : '−'} {formatarMoeda(t.valor)}
               </span>
-              <button type="button" className="excluir" onClick={() => remover(t)} aria-label={`Excluir ${t.descricao}`}>
-                ×
+              <button
+                type="button"
+                className="excluir"
+                onClick={() => remover(t)}
+                aria-label={`Excluir ${t.descricao}`}
+                title="Excluir"
+              >
+                <span aria-hidden="true">×</span>
               </button>
             </li>
           ))}

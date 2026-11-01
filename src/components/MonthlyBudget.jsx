@@ -19,6 +19,12 @@ export default function MonthlyBudget({ transacoes, limites, onDefinir, onRemove
     setErro('');
   };
 
+  const irParaMesAtual = () => {
+    setMes(mesAtualISO());
+    setEditando(false);
+    setErro('');
+  };
+
   const comecarEdicao = () => {
     setEntrada(limite ? String(limite).replace('.', ',') : '');
     setErro('');
@@ -44,13 +50,15 @@ export default function MonthlyBudget({ transacoes, limites, onDefinir, onRemove
           <button type="button" onClick={() => mudarMes(-1)} aria-label="Mês anterior">
             ‹
           </button>
-          <span className="mes-nome">{formatarMes(mes)}</span>
+          <span className="mes-nome" aria-live="polite">
+            {formatarMes(mes)}
+          </span>
           <button type="button" onClick={() => mudarMes(1)} aria-label="Próximo mês">
             ›
           </button>
           {mes !== mesAtualISO() && (
-            <button type="button" className="link" onClick={() => setMes(mesAtualISO())}>
-              Hoje
+            <button type="button" className="link" onClick={irParaMesAtual}>
+              Mês atual
             </button>
           )}
         </div>

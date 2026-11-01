@@ -370,13 +370,21 @@ button:disabled {
   display: block;
 }
 
-.barra-linha:hover .dica {
-  display: block;
+/* Só em dispositivos com mouse: no toque a dica ficaria presa e poderia
+   vazar pela lateral da tela */
+@media (hover: hover) {
+  .barra-linha:hover .dica {
+    display: block;
+  }
 }
 
 .vazio {
-  color: var(--texto-mudo);
-  margin: 8px 0;
+  color: var(--texto-2);
+  margin: 0;
+  padding: 16px;
+  border: 1px dashed var(--borda-campo);
+  border-radius: 8px;
+  font-size: 14px;
 }
 
 /* ---------- Lista de transações ---------- */
@@ -391,6 +399,12 @@ button:disabled {
 
 .lista-cabecalho h2 {
   margin: 0;
+}
+
+.contagem {
+  color: var(--texto-mudo);
+  font-weight: 400;
+  font-variant-numeric: tabular-nums;
 }
 
 .lista {

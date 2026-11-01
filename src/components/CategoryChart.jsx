@@ -9,7 +9,9 @@ export default function CategoryChart({ dados }) {
     <section className="painel">
       <h2>Para onde vai o seu dinheiro</h2>
       {dados.length === 0 ? (
-        <p className="vazio">Adicione despesas para ver os gastos por categoria.</p>
+        <p className="vazio">
+          Nenhuma despesa ainda. Quando você adicionar despesas, este gráfico mostra quais categorias pesam mais.
+        </p>
       ) : (
         <ul className="barras" aria-label="Gastos por categoria">
           {dados.map((d) => (
@@ -22,7 +24,8 @@ export default function CategoryChart({ dados }) {
                 {formatarMoeda(d.valor)}
                 <span className="barra-pct">{formatarPorcentagem(d.fracao)}</span>
               </span>
-              <span className="dica" role="tooltip">
+              {/* Repete o que já está visível; só para quem usa o mouse */}
+              <span className="dica" aria-hidden="true">
                 <strong>{d.categoria}</strong>
                 {formatarMoeda(d.valor)} · {formatarPorcentagem(d.fracao)} das despesas
               </span>
