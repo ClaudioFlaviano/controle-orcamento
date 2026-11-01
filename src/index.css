@@ -176,11 +176,20 @@ select {
   min-width: 0;
 }
 
-input:focus,
-select:focus,
+input:hover,
+select:hover {
+  border-color: var(--texto-mudo);
+}
+
+input:focus-visible,
+select:focus-visible,
 button:focus-visible {
   outline: 2px solid var(--destaque);
-  outline-offset: 1px;
+  outline-offset: 2px;
+}
+
+input[aria-invalid='true'] {
+  border-color: var(--negativo);
 }
 
 .linha {
@@ -197,6 +206,12 @@ button:focus-visible {
 button {
   font: inherit;
   cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease, filter 0.15s ease;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
 }
 
 .botao-principal {
@@ -208,8 +223,12 @@ button {
   font-weight: 600;
 }
 
-.botao-principal:hover {
-  filter: brightness(1.08);
+.botao-principal:hover:not(:disabled) {
+  filter: brightness(1.1);
+}
+
+.botao-principal:active:not(:disabled) {
+  filter: brightness(0.92);
 }
 
 .segmentado {
@@ -226,6 +245,10 @@ button {
   color: var(--texto-2);
   padding: 6px 14px;
   border-radius: 6px;
+}
+
+.segmentado button:hover:not(.ativo) {
+  color: var(--texto);
 }
 
 .segmentado button.ativo {
@@ -391,9 +414,14 @@ button {
   border-radius: 6px;
 }
 
-.excluir:hover {
+.excluir:hover,
+.excluir:focus-visible {
   background: var(--trilho);
   color: var(--negativo);
+}
+
+.excluir:active {
+  filter: brightness(0.92);
 }
 
 /* ---------- Orçamento mensal ---------- */
@@ -427,6 +455,14 @@ button {
   line-height: 1;
 }
 
+.seletor-mes > button:not(.link):hover {
+  background: var(--trilho);
+}
+
+.seletor-mes > button:not(.link):active {
+  filter: brightness(0.92);
+}
+
 .mes-nome {
   min-width: 150px;
   text-align: center;
@@ -436,6 +472,7 @@ button {
 .link {
   border: none;
   background: none;
+  border-radius: 6px;
   padding: 4px 6px;
   color: var(--destaque);
   font-size: 13px;
@@ -444,6 +481,11 @@ button {
 
 .link:hover {
   text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.link.perigo {
+  color: var(--negativo);
 }
 
 .orcamento-form {
@@ -467,6 +509,11 @@ button {
   background: transparent;
   color: var(--texto);
   border-radius: 8px;
+  font-weight: 500;
+}
+
+.botao-secundario:hover {
+  background: var(--trilho);
 }
 
 .progresso {

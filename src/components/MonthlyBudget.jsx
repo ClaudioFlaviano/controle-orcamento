@@ -132,7 +132,7 @@ function Progresso({ gasto, limite, onAlterar, onRemover }) {
           </button>
           <button
             type="button"
-            className="link"
+            className="link perigo"
             onClick={() => window.confirm('Remover o limite deste mês?') && onRemover()}
           >
             Remover
