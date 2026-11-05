@@ -725,6 +725,33 @@ button:disabled {
   flex: none;
 }
 
+.aviso-importar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+  padding: 16px 20px;
+  border: 1px solid var(--destaque);
+  border-left-width: 4px;
+  border-radius: 8px;
+  background: var(--superficie);
+}
+
+.aviso-importar p {
+  margin: 0;
+}
+
+.aviso-acoes {
+  display: flex;
+  gap: 8px;
+}
+
+.aviso-acoes .botao-principal {
+  padding: 10px 20px;
+  min-height: 40px;
+}
+
 .carregando {
   text-align: center;
   color: var(--texto-mudo);
@@ -760,6 +787,15 @@ code {
   .conta {
     width: 100%;
     justify-content: space-between;
+  }
+
+  .aviso-acoes,
+  .aviso-acoes button {
+    flex: 1;
+  }
+
+  .aviso-acoes .botao-principal {
+    min-height: 44px;
   }
 
   .botao-google {

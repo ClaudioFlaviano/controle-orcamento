@@ -4,6 +4,7 @@ import TransactionForm from './components/TransactionForm';
 import CategoryChart from './components/CategoryChart';
 import TransactionList from './components/TransactionList';
 import Login, { NovaSenha } from './components/Login';
+import ImportarDadosLocais from './components/ImportarDadosLocais';
 import { useTransactions } from './hooks/useTransactions';
 import { useBudgets } from './hooks/useBudgets';
 import { useAuth } from './hooks/useAuth';
@@ -66,6 +67,13 @@ function Painel({ usuario, onSair }) {
           </button>
         </div>
       )}
+      <ImportarDadosLocais
+        userId={usuario.id}
+        onImportado={() => {
+          dados.recarregar();
+          orcamento.recarregar();
+        }}
+      />
       {dados.carregando || orcamento.carregando ? (
         <p className="carregando" role="status">
           Carregando seus dados…
