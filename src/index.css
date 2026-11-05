@@ -634,6 +634,91 @@ button:disabled {
   font-weight: 600;
 }
 
+/* ---------- Conta e login ---------- */
+.cabecalho {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.conta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.conta-email {
+  color: var(--texto-2);
+  font-size: 13px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 260px;
+}
+
+.app-login {
+  max-width: 420px;
+  min-height: 100vh;
+  justify-content: center;
+}
+
+.login {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.login h2 {
+  margin: 0;
+}
+
+.login p {
+  margin: 0;
+  color: var(--texto-2);
+}
+
+.login .link {
+  align-self: center;
+}
+
+.separador {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--texto-mudo);
+  font-size: 13px;
+}
+
+.separador::before,
+.separador::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--borda);
+}
+
+.botao-google {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  min-height: 44px;
+}
+
+.carregando {
+  text-align: center;
+  color: var(--texto-mudo);
+}
+
+code {
+  font-size: 0.9em;
+  background: var(--trilho);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
 /* ---------- Telas médias ---------- */
 /* Abaixo disto o formulário e o gráfico lado a lado ficam apertados */
 @media (max-width: 860px) {
@@ -647,6 +732,20 @@ button:disabled {
   .app {
     padding: 24px 16px 48px;
     gap: 16px;
+  }
+
+  .cabecalho {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .conta {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .botao-google {
+    font-size: 16px;
   }
 
   .cards {
