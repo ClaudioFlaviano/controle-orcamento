@@ -1,25 +1,72 @@
-import { useEffect, useMemo, useState } from 'react';
-import { CATEGORIAS_RENOMEADAS, STORAGE_KEY } from '../constants';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { CATEGORIAS_RENOMEADAS } from '../constants';
+import { supabase } from '../lib/supabase';
 
-function carregar() {
-  try {
-    const dados = JSON.parse(localStorage.getItem(STORAGE_KEY));
-    if (!Array.isArray(dados)) return [];
-    return dados.map((t) => ({ ...t, categoria: CATEGORIAS_RENOMEADAS[t.categoria] || t.categoria }));
-  } catch {
-    return [];
+const COLUNAS = 'id, tipo, descricao, valor, categoria, data';
+// O Supabase devolve no máximo 1000 linhas por consulta; buscamos em páginas
+const PAGINA = 1000;
+
+// O banco devolve "numeric" como texto: convertemos para número
+const normalizar = (t) => ({
+  ...t,
+  valor: Number(t.valor),
+  categoria: CATEGORIAS_RENOMEADAS[t.categoria] || t.categoria,
+});
+
+async function carregarTodas() {
+  const todas = [];
+  for (let inicio = 0; ; inicio += PAGINA) {
+    const { data, error } = await supabase
+      .from('transacoes')
+      .select(COLUNAS)
+      .order('data', { ascending: false })
+      .order('criado_em', { ascending: false })
+      .range(inicio, inicio + PAGINA - 1);
+    if (error) throw error;
+    todas.push(...data);
+    if (data.length < PAGINA) return todas.map(normalizar);
   }
 }
 
-export function useTransactions() {
-  const [transacoes, setTransacoes] = useState(carregar);
+export function useTransactions(userId) {
+  const [transacoes, setTransacoes] = useState([]);
+  const [carregando, setCarregando] = useState(true);
+  const [erro, setErro] = useState('');
+  const [versao, setVersao] = useState(0);
+
+  const recarregar = useCallback(() => setVersao((v) => v + 1), []);
 
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(transacoes));
-  }, [transacoes]);
+    // "carregando" só vale para a primeira carga; recargas trocam os dados sem esconder a tela
+    let ativo = true;
+    carregarTodas()
+      .then((lista) => ativo && setTransacoes(lista))
+      .catch(() => ativo && setErro('Não foi possível carregar suas transações. Verifique sua conexão e recarregue a página.'))
+      .finally(() => ativo && setCarregando(false));
+    return () => {
+      ativo = false;
+    };
+  }, [userId, versao]);
 
-  const adicionar = (t) => setTransacoes((lista) => [{ ...t, id: crypto.randomUUID() }, ...lista]);
-  const remover = (id) => setTransacoes((lista) => lista.filter((t) => t.id !== id));
+  // As mudanças aparecem na hora; se o banco recusar, desfazemos e avisamos
+  const adicionar = async (t) => {
+    const nova = { ...t, id: crypto.randomUUID() };
+    setTransacoes((lista) => [nova, ...lista]);
+    const { error } = await supabase.from('transacoes').insert({ ...nova, user_id: userId });
+    if (error) {
+      setTransacoes((lista) => lista.filter((x) => x.id !== nova.id));
+      setErro(`Não foi possível salvar “${t.descricao}”. Tente de novo.`);
+    }
+  };
+
+  const remover = async (id) => {
+    setTransacoes((lista) => lista.filter((t) => t.id !== id));
+    const { error } = await supabase.from('transacoes').delete().eq('id', id);
+    if (error) {
+      setErro('Não foi possível excluir a transação. Tente de novo.');
+      recarregar();
+    }
+  };
 
   const resumo = useMemo(() => {
     let renda = 0;
@@ -39,5 +86,5 @@ export function useTransactions() {
     return { renda, despesas, saldo: renda - despesas, gastosPorCategoria };
   }, [transacoes]);
 
-  return { transacoes, adicionar, remover, ...resumo };
+  return { transacoes, adicionar, remover, carregando, erro, limparErro: () => setErro(''), recarregar, ...resumo };
 }

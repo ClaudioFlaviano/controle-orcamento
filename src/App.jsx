@@ -32,8 +32,15 @@ function ComLogin() {
 }
 
 function Painel({ usuario, onSair }) {
-  const { transacoes, adicionar, remover, renda, despesas, saldo, gastosPorCategoria } = useTransactions();
-  const { limites, definirLimite, removerLimite } = useBudgets();
+  const dados = useTransactions(usuario.id);
+  const orcamento = useBudgets(usuario.id);
+  const { transacoes, adicionar, remover, renda, despesas, saldo, gastosPorCategoria } = dados;
+  const { limites, definirLimite, removerLimite } = orcamento;
+  const erro = dados.erro || orcamento.erro;
+  const limparErro = () => {
+    dados.limparErro();
+    orcamento.limparErro();
+  };
 
   return (
     <main className="app">
@@ -51,13 +58,29 @@ function Painel({ usuario, onSair }) {
           </button>
         </div>
       </header>
-      <SummaryCards renda={renda} despesas={despesas} saldo={saldo} />
-      <MonthlyBudget transacoes={transacoes} limites={limites} onDefinir={definirLimite} onRemover={removerLimite} />
-      <div className="grade">
-        <TransactionForm onAdicionar={adicionar} />
-        <CategoryChart dados={gastosPorCategoria} />
-      </div>
-      <TransactionList transacoes={transacoes} onRemover={remover} />
+      {erro && (
+        <div className="alerta" role="alert">
+          <span>{erro}</span>
+          <button type="button" className="link" onClick={limparErro}>
+            Fechar
+          </button>
+        </div>
+      )}
+      {dados.carregando || orcamento.carregando ? (
+        <p className="carregando" role="status">
+          Carregando seus dados…
+        </p>
+      ) : (
+        <>
+          <SummaryCards renda={renda} despesas={despesas} saldo={saldo} />
+          <MonthlyBudget transacoes={transacoes} limites={limites} onDefinir={definirLimite} onRemover={removerLimite} />
+          <div className="grade">
+            <TransactionForm onAdicionar={adicionar} />
+            <CategoryChart dados={gastosPorCategoria} />
+          </div>
+          <TransactionList transacoes={transacoes} onRemover={remover} />
+        </>
+      )}
     </main>
   );
 }
